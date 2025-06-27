@@ -48,3 +48,5 @@ CREATE TABLE ListItems
 	FOREIGN KEY (game_id) REFERENCES GameData (game_id) ON DELETE CASCADE
 	
 );
+
+INSERT INTO UserData (user_name, user_password) VALUES ('UserName', 'Password'); --Adjust these as you like for testing
