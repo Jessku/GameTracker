@@ -1,26 +1,57 @@
 package com.example.DAOs;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.example.ConnectionManager;
+import com.example.Objs.UserData;
 
 public class UserDataDAO implements DAOInterface {
 
+    //Declare Variables
+    private Connection connection = null;
+
     @Override
     public void establishConnection() throws ClassNotFoundException, SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'establishConnection'");
+        if(connection == null) {
+            connection = ConnectionManager.getConnection();
+        }
     }
 
     @Override
     public void closeConnection() throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'closeConnection'");
+        connection.close();
     }
 
     @Override
     public List getAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+        try{
+            establishConnection();
+            
+            //Declare Variables
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM UserData");
+            List<UserData> returnUsers = new ArrayList<>();
+            ResultSet rs = pStatement.executeQuery();
+            while(rs.next()){
+                //Create UserData object from result set
+                UserData user = new UserData(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"));
+                returnUsers.add(user);
+            }
+            rs.close();
+            return returnUsers;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
