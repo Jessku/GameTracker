@@ -13,7 +13,7 @@ public class ListItems {
     private Date dateInProgress;
     private Date dateCompleted;
 
-    //Constructor
+    //Constructors
     public ListItems(Integer id, Integer listId, Integer gameId, String status, Date dateAdded, Date dateInProgress, Date dateCompleted) {
         super();
         this.id = id;
@@ -23,6 +23,17 @@ public class ListItems {
         this.dateAdded = dateAdded;
         this.dateInProgress = dateInProgress;
         this.dateCompleted = dateCompleted;
+    }
+
+    public ListItems(Integer id, Integer listId, Integer gameId, String status) {
+        super();
+        this.id = id;
+        this.listId = listId;
+        this.gameId = gameId;
+        this.status = status;
+        this.dateAdded = null;
+        this.dateInProgress = null;
+        this.dateCompleted = null;
     }
 
     public Integer getId() {
