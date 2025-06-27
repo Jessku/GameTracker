@@ -15,6 +15,13 @@ public class UserData {
         this.userPassword = userPassword;
     }
 
+    public UserData(String userName, String userPassword) {
+        super();
+        this.userId = null; // Assuming userId is auto-generated
+        this.userName = userName;
+        this.userPassword = userPassword;
+    }
+
     //Getters and Setters
     public Integer getUserId() {
         return userId;

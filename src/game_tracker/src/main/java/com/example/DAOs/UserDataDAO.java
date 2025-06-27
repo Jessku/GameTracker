@@ -55,9 +55,28 @@ public class UserDataDAO implements DAOInterface {
     }
 
     @Override
-    public void create(Object entity) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    public boolean create(Object entity) throws SQLException {
+        try {
+            establishConnection();
+            if (entity instanceof UserData) {
+                UserData newUser = (UserData) entity;
+                PreparedStatement pStatement = connection.prepareStatement("INSERT INTO UserData (user_name, user_password) VALUES (?, ?)");
+                pStatement.setString(1, newUser.getUserName());
+                pStatement.setString(2, newUser.getUserPassword());
+                int rowsAffected = pStatement.executeUpdate();
+                if (rowsAffected > 0) return true;
+            } else {
+                throw new IllegalArgumentException("Entity must be of type UserData");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
+
+        return false;
     }
 
     @Override

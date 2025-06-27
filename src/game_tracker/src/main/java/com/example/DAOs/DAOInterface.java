@@ -9,7 +9,7 @@ public interface DAOInterface<E> {
     public void closeConnection() throws SQLException;
 
     public List<E> getAll();
-    public void create(E entity) throws SQLException;
+    public boolean create(E entity) throws SQLException;
     public E getById(int id);
     public List<E> getByCondition(String condition) throws SQLException;
     public boolean update(E entity);

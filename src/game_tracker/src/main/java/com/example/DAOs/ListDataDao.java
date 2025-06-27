@@ -26,7 +26,8 @@ public class ListDataDao<E> implements DAOInterface<E> {
     }
 
     @Override
-    public void create(E entity) throws SQLException {
+    public boolean create(E entity) throws SQLException {
+        return false;
         // Implementation for create
     }
 
