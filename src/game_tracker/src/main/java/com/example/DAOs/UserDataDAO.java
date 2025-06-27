@@ -81,8 +81,23 @@ public class UserDataDAO implements DAOInterface {
 
     @Override
     public Object getById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM UserData WHERE user_id = ?");
+            pStatement.setInt(1, id);
+            ResultSet rs = pStatement.executeQuery();
+            rs.next();
+            UserData returnUser = new UserData(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"));
+            return returnUser;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
     }
 
     @Override
