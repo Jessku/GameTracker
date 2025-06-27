@@ -1,13 +1,17 @@
 package com.example.DAOs;
 
-public class ListDataDao implements DAOInterface {
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+public class ListDataDao<E> implements DAOInterface<E> {
 
     private Connection connection = null;
 
     @Override
     public void establishConnection() throws ClassNotFoundException, SQLException {
         // Implementation for establishing connection
-        if(connection == null)
+        //if(connection == null)
     }
 
     @Override

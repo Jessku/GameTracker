@@ -1,6 +1,9 @@
 package com.example.DAOs;
 
-public interface DAOInterface {
+import java.sql.SQLException;
+import java.util.List;
+
+public interface DAOInterface<E> {
 
     public void establishConnection() throws ClassNotFoundException, SQLException;
     public void closeConnection() throws SQLException;
