@@ -108,8 +108,15 @@ public class UserDataDAO implements DAOInterface {
 
     @Override
     public boolean update(Object entity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        // This can be used to update username and password
+        try{
+            establishConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE ? FROM UserData WHERE ? = ?"); //We'd have to check which data the user wants to update
+        }
+        catch(SQLException e){
+            e.prinStackTrace();
+            throw e;
+        }
     }
 
     @Override

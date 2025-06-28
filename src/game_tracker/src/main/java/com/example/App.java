@@ -20,6 +20,7 @@ public class App
         List<UserData> userList = userDAO.getAll(); //Initial user list
         UserData newUser1 = new UserData("Hatsune Miku", "W0rld15M1n3"); //New user to be added
         UserData newUser2 = new UserData("Axl Low", "OutOfTheBox"); //New user to be added
+        Integer getid = 1;
 
 
         System.out.println( "Hello World!" );
@@ -41,6 +42,10 @@ public class App
         }
 
         //UserDataDAO.getById()
+        System.out.println(userDAO.getById(getid).toString());
+        System.out.println();
+
+        //USerDataDAO.update()
 
          
 
