@@ -88,6 +88,7 @@ public class UserDataDAO implements DAOInterface {
             ResultSet rs = pStatement.executeQuery();
             rs.next();
             UserData returnUser = new UserData(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"));
+            rs.close();
             return returnUser;
         }
         catch(SQLException e){
@@ -102,8 +103,28 @@ public class UserDataDAO implements DAOInterface {
 
     @Override
     public List getByCondition(String condition) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getByCondition'");
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM UserData WHERE user_name = ?");
+            pStatement.setString(1, condition);
+            ResultSet rs = pStatement.executeQuery();
+            List<UserData> returnUsers = new ArrayList<>();
+            while(rs.next()){
+                //Create UserData object from result set
+                UserData user = new UserData(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"));
+                returnUsers.add(user);
+            }
+            rs.close();
+            return returnUsers;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
     }
 
     @Override
@@ -158,8 +179,22 @@ public class UserDataDAO implements DAOInterface {
 
     @Override
     public boolean delete(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("DELETE FROM UserData WHERE user_id = ?");
+            pStatement.setInt(1, id);
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if delete fails
     }
 
     // Implement methods from DAOInterface here

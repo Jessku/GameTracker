@@ -1,6 +1,7 @@
 package com.example;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.DAOs.DAOInterface;
@@ -23,6 +24,7 @@ public class App
         UserData newUser2 = new UserData("Axl Low", "OutOfTheBox"); //New user to be added
         UserData newUser3 = new UserData(3, "Axl Low", "0ut0f7h380x"); //New user to be added
         Integer getid = 3;
+        Integer delid = 2;
 
 
         System.out.println( "Hello World!" );
@@ -67,6 +69,28 @@ public class App
         userList = userDAO.getAll(); //Refresh the user list after adding a new user
         userList.forEach(e-> {System.out.println(e.toString());});
         System.out.println();
+
+        //UserDataDAO.delete()
+        if(userDAO.delete(delid)) {
+            System.out.println("User deleted successfully.");
+        } else {
+            System.out.println("Failed to delete user. User may not exist.");
+        }
+        userList = userDAO.getAll(); //Refresh the user list after adding a new user
+        userList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
+        //UserDataDAO.getByCondition()
+        try {
+            List<UserData> filteredUsers = userDAO.getByCondition("Hatsune Miku");
+            filteredUsers.forEach(e -> {System.out.println(e.toString());});
+            System.out.println();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+
 
 
          
