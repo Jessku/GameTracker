@@ -2,35 +2,35 @@ package com.example.Objs;
 
 public class GameData {
     //Deckare Variables
-    private Integer id;
+    private Integer gameId;
     //private Integer user_id;
-    private String game_name;
-    private String game_platform;
+    private String gameName;
+    private String gamePlatform;
 
     //Constructors
     public GameData(Integer id, String game_name, String game_platform) {
         super();
-        this.id = id;
+        this.gameId = id;
         //this.user_id = user_id;
-        this.game_name = game_name;
-        this.game_platform = game_platform;
+        this.gameName = game_name;
+        this.gamePlatform = game_platform;
     }
 
      public GameData(String game_name, String game_platform) {
         super();
-        this.id = null; // Assuming id is auto-generated
+        this.gameId = null; // Assuming id is auto-generated
         //this.user_id = null; // Assuming user_id is set later
-        this.game_name = game_name;
-        this.game_platform = game_platform;
+        this.gameName = game_name;
+        this.gamePlatform = game_platform;
     }
 
     //Getters and Setters
     public Integer getId() {
-        return id;
+        return gameId;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.gameId = id;
     }
 
     // public Integer getUser_id() {
@@ -42,24 +42,24 @@ public class GameData {
     // }
 
     public String getGame_name() {
-        return game_name;
+        return gameName;
     }
 
     public void setGame_name(String game_name) {
-        this.game_name = game_name;
+        this.gameName = game_name;
     }
 
     public String getGame_platform() {
-        return game_platform;
+        return gamePlatform;
     }
 
     public void setGame_platform(String game_platform) {
-        this.game_platform = game_platform;
+        this.gamePlatform = game_platform;
     }
 
     @Override
     public String toString() {
-        return "GameData [id=" + id + ", game_name=" + game_name + ", game_platform=" + game_platform + "]";
+        return "GameData [id=" + gameId + ", game_name=" + gameName + ", game_platform=" + gamePlatform + "]";
     }
     
 
