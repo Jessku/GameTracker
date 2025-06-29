@@ -92,12 +92,12 @@ public class UserDataDAO implements DAOInterface {
         }
         catch(SQLException e){
             e.printStackTrace();
-            throw e;
         }
         catch(ClassNotFoundException e){
             e.printStackTrace();
-            throw new SQLException("Database connection error");
         }
+
+        return null; // Return null if no user found or an error occurs
     }
 
     @Override
@@ -111,12 +111,49 @@ public class UserDataDAO implements DAOInterface {
         // This can be used to update username and password
         try{
             establishConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE ? FROM UserData WHERE ? = ?"); //We'd have to check which data the user wants to update
+            PreparedStatement pStatement = connection.prepareStatement("UPDATE UserData SET user_name = ?, user_password = ? WHERE user_id = ?");
+            pStatement.setString(1, ((UserData) entity).getUserName());
+            pStatement.setString(2, ((UserData) entity).getUserPassword());
+            pStatement.setInt(3, ((UserData) entity).getUserId());
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
         }
         catch(SQLException e){
-            e.prinStackTrace();
-            throw e;
+            e.printStackTrace();
+            return false;
         }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if update fails
+    }
+
+    public boolean update(Object entity, char updateType, String newValue) {
+        // This can be used to update username and password
+        try{
+            establishConnection();
+            PreparedStatement pStatement = null;
+            //We'd have to check which data the user wants to update
+            if(updateType == 'n')  pStatement = connection.prepareStatement("UPDATE UserData SET user_name = ? WHERE user_id = ?");
+            else if(updateType == 'p')  pStatement = connection.prepareStatement("UPDATE UserData SET user_password = ? WHERE user_id = ?");
+            else throw new IllegalArgumentException("Invalid update type. Use 'n' for username or 'p' for password.");
+            
+            pStatement.setString(1, newValue);
+            pStatement.setInt(2, ((UserData) entity).getUserId());
+
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if update fails
     }
 
     @Override
