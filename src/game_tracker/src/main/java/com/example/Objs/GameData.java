@@ -3,15 +3,23 @@ package com.example.Objs;
 public class GameData {
     //Deckare Variables
     private Integer id;
-    private Integer user_id;
+    //private Integer user_id;
     private String game_name;
     private String game_platform;
 
-    //Constructor
+    //Constructors
     public GameData(Integer id, Integer user_id, String game_name, String game_platform) {
         super();
         this.id = id;
-        this.user_id = user_id;
+        //this.user_id = user_id;
+        this.game_name = game_name;
+        this.game_platform = game_platform;
+    }
+
+     public GameData(String game_name, String game_platform) {
+        super();
+        this.id = null; // Assuming id is auto-generated
+        //this.user_id = null; // Assuming user_id is set later
         this.game_name = game_name;
         this.game_platform = game_platform;
     }
@@ -25,13 +33,13 @@ public class GameData {
         this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
-    }
+    // public Integer getUser_id() {
+    //     return user_id;
+    // }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
+    // public void setUser_id(Integer user_id) {
+    //     this.user_id = user_id;
+    // }
 
     public String getGame_name() {
         return game_name;
@@ -51,7 +59,7 @@ public class GameData {
 
     @Override
     public String toString() {
-        return "GameData [id=" + id + ", user_id=" + user_id + ", game_name=" + game_name + ", game_platform=" + game_platform + "]";
+        return "GameData [id=" + id + ", game_name=" + game_name + ", game_platform=" + game_platform + "]";
     }
     
 

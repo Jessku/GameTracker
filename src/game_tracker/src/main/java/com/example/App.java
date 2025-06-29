@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.DAOs.DAOInterface;
+import com.example.DAOs.GameDataDAO;
 import com.example.DAOs.UserDataDAO;
+import com.example.Objs.GameData;
 import com.example.Objs.UserData;
 
 /**
@@ -24,10 +26,12 @@ public class App
         UserData newUser2 = new UserData("Axl Low", "OutOfTheBox"); //New user to be added
         UserData newUser3 = new UserData(3, "Axl Low", "0ut0f7h380x"); //New user to be added
         Integer getid = 3;
-        Integer delid = 2;
+        Integer delid = 1;
 
 
         System.out.println( "Hello World!" );
+
+        System.out.println("**********USER DATA DAO TEST**********");
 
         //UserDataDAO.getAll()
         userList.forEach(e-> {System.out.println(e.toString());});
@@ -89,6 +93,12 @@ public class App
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+
+        System.out.println("\n**********GAME DATA DAO TEST**********");
+        //Declare Variables
+        DAOInterface gameDAO = new GameDataDAO(); //DAO for GameData
+        List<GameData> gameList = gameDAO.getAll(); //Initial game list
+
 
 
 

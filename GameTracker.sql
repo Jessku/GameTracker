@@ -19,10 +19,10 @@ CREATE TABLE UserData
 CREATE TABLE GameData
 (
 	game_id SERIAL PRIMARY KEY,
-	user_id INTEGER,
+	--user_id INTEGER,
 	game_name VARCHAR(255) NOT NULL,
-	game_platform VARCHAR(255),
-	FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
+	game_platform VARCHAR(255)
+	--FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
 );
 
 
