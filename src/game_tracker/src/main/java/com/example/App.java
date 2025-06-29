@@ -99,6 +99,10 @@ public class App
         DAOInterface gameDAO = new GameDataDAO(); //DAO for GameData
         List<GameData> gameList = gameDAO.getAll(); //Initial game list
 
+        //GameDataDAO.getAll()
+        gameList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
 
 
 

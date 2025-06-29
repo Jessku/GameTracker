@@ -1,10 +1,15 @@
 package com.example.DAOs;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.ConnectionManager;
 import com.example.Objs.GameData;
+import com.example.Objs.UserData;
 
 public class GameDataDAO implements DAOInterface<GameData> {
 
@@ -13,18 +18,41 @@ public class GameDataDAO implements DAOInterface<GameData> {
 
     @Override
     public void establishConnection() throws ClassNotFoundException, SQLException {
-        // Implementation for establishing connection
+        if(connection == null) {
+            connection = ConnectionManager.getConnection();
+        }
     }
 
     @Override
     public void closeConnection() throws SQLException {
-        // Implementation for closing connection
+        connection.close();
     }
 
     @Override
     public List<GameData> getAll() {
-        // Implementation for getAll
-        return null;
+         try{
+            establishConnection();
+            
+            //Declare Variables
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM GameData");
+            List<GameData> returnGames = new ArrayList<>();
+            ResultSet rs = pStatement.executeQuery();
+            while(rs.next()){
+                //Create UserData object from result set
+                GameData newGame = new GameData(rs.getInt("game_id"), rs.getString("game_name"), rs.getString("game_platform"));
+                returnGames.add(newGame);
+            }
+            rs.close();
+            return returnGames;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

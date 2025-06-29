@@ -8,7 +8,7 @@ public class GameData {
     private String game_platform;
 
     //Constructors
-    public GameData(Integer id, Integer user_id, String game_name, String game_platform) {
+    public GameData(Integer id, String game_name, String game_platform) {
         super();
         this.id = id;
         //this.user_id = user_id;
