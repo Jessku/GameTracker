@@ -27,6 +27,7 @@ public class App
         UserData newUser3 = new UserData(3, "Axl Low", "0ut0f7h380x"); //New user to be added
         Integer getid = 3;
         Integer delid = 1;
+        Integer noid = 100; //ID that does not exist in the database
 
 
         System.out.println( "Hello World!" );
@@ -50,8 +51,12 @@ public class App
         }
 
         //UserDataDAO.getById()
-        System.out.println(userDAO.getById(getid).toString());
-        System.out.println();
+        if(userDAO.getById(noid) == null) {
+            System.out.println("User not found.");
+        } else {
+            System.out.println(userDAO.getById(getid).toString());
+            System.out.println();
+        }
 
         //UserDataDAO.update()
         if(userData.update(userList.get(1), 'n', "Hatsune Miku")) {
@@ -98,10 +103,46 @@ public class App
         //Declare Variables
         DAOInterface gameDAO = new GameDataDAO(); //DAO for GameData
         List<GameData> gameList = gameDAO.getAll(); //Initial game list
+        GameData newGame1 = new GameData("Guilty Gear Strive", "PS5"); //New game to be added
+        GameData newGame2 = new GameData("Triangle Strategy", "Steam"); //New game to be added
+        GameData newGame3 = new GameData("Fire Emblem: Echoes", "3DS");
+        List<GameData> filteredGames = new ArrayList<>(); //List to hold filtered games
 
         //GameDataDAO.getAll()
         gameList.forEach(e-> {System.out.println(e.toString());});
         System.out.println();
+
+        //GameDataDAO.create()
+        try {
+            if(gameDAO.create(newGame1) && gameDAO.create(newGame2) && gameDAO.create(newGame3)) {
+                gameList = gameDAO.getAll(); //Refresh the game list after adding a new game
+                gameList.forEach(e-> {System.out.println(e.toString());});
+                System.out.println();
+            } else {
+                System.out.println("Failed to add new games.");
+            }
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        //GameDataDAO.getById()
+        if(gameDAO.getById(noid) == null) {
+            System.out.println("Game not found.");
+        } else {
+            System.out.println(gameDAO.getById(getid).toString());
+            System.out.println();
+        }
+
+        //GameDataDAO.getByCondition()
+        try {
+            filteredGames = gameDAO.getByCondition("PS5");
+            filteredGames.forEach(e -> {System.out.println(e.toString());});
+            System.out.println();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
 
 
 

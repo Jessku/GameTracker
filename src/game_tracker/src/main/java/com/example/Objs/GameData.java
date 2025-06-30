@@ -41,19 +41,19 @@ public class GameData {
     //     this.user_id = user_id;
     // }
 
-    public String getGame_name() {
+    public String getGameName() {
         return gameName;
     }
 
-    public void setGame_name(String game_name) {
+    public void setGameName(String game_name) {
         this.gameName = game_name;
     }
 
-    public String getGame_platform() {
+    public String getGamePlatform() {
         return gamePlatform;
     }
 
-    public void setGame_platform(String game_platform) {
+    public void setGamePlatform(String game_platform) {
         this.gamePlatform = game_platform;
     }
 

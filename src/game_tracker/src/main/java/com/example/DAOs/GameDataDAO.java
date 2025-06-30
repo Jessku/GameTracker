@@ -57,20 +57,72 @@ public class GameDataDAO implements DAOInterface<GameData> {
 
     @Override
     public boolean create(GameData entity) throws SQLException {
-        // Implementation for create
+        try {
+            establishConnection();
+             
+            PreparedStatement pStatement = connection.prepareStatement("INSERT INTO GameData (game_name, game_platform) VALUES (?, ?)");
+            pStatement.setString(1, entity.getGameName());
+            pStatement.setString(2, entity.getGamePlatform());
+            int rowsAffected = pStatement.executeUpdate();
+            if (rowsAffected > 0) return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
+
         return false;
     }
 
     @Override
     public GameData getById(int id) {
-        // Implementation for getById
-        return null;
+       try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM GameData WHERE game_id = ?");
+            pStatement.setInt(1, id);
+            ResultSet rs = pStatement.executeQuery();
+            rs.next();
+            GameData returnGame = new GameData(rs.getInt("game_id"), rs.getString("game_name"), rs.getString("game_platform"));
+            rs.close();
+            return returnGame;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return null; // Return null if no game found or an error occurs
     }
 
     @Override
     public List<GameData> getByCondition(String condition) throws SQLException {
-        // Implementation for getByCondition
-        return null;
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM GameData WHERE game_platform = ?");
+            pStatement.setString(1, condition);
+            ResultSet rs = pStatement.executeQuery();
+            List<GameData> returnGames = new ArrayList<>();
+            while(rs.next()){
+                //Create UserData object from result set
+                GameData game = new GameData(rs.getInt("game_id"), rs.getString("game_name"), rs.getString("game_platform"));
+                returnGames.add(game);
+            }
+            rs.close();
+            return returnGames;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
     }
 
     @Override
