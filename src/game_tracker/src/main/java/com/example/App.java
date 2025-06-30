@@ -114,7 +114,10 @@ public class App
         GameData newGame2 = new GameData("Triangle Strategy", "Switch"); //New game to be added
         GameData newGame3 = new GameData("Fire Emblem: Echoes", "3DS"); //New game to be added
         GameData newGame4 = new GameData(3, "Gravity Rush", "PSVita"); //New game to be updated
+        GameData newGame5 = new GameData(4, "Tekken 5", "Wii"); //New game to be added
         List<GameData> filteredGames = new ArrayList<>(); //List to hold filtered games
+        String delName = "Tekken 5"; //Name of the game to be deleted
+        String delPlatform = "Wii"; //Platform of the game to be deleted
 
         //GameDataDAO.getAll()
         gameList.forEach(e-> {System.out.println(e.toString());});
@@ -122,7 +125,7 @@ public class App
 
         //GameDataDAO.create()
         try {
-            if(gameDAO.create(newGame1) && gameDAO.create(newGame2) && gameDAO.create(newGame3)) {
+            if(gameDAO.create(newGame1) && gameDAO.create(newGame2) && gameDAO.create(newGame3) && gameDAO.create(newGame5)) {
                 gameList = gameDAO.getAll(); //Refresh the game list after adding a new game
                 gameList.forEach(e-> {System.out.println(e.toString());});
                 System.out.println();
@@ -159,7 +162,7 @@ public class App
         } else {
             System.out.println("Failed to update game platform.");
         }
-        if(gameData.update(newGame4)) {
+        if(gameDAO.update(newGame4)) {
             System.out.println("Game name and platform updated successfully.");
         } else {
             System.out.println("Failed to update game name and platform.");
@@ -167,6 +170,23 @@ public class App
         gameList = gameDAO.getAll(); //Refresh the game list after adding a new game
         gameList.forEach(e-> {System.out.println(e.toString());});
         System.out.println();
+
+        //GameDataDAO.delete()
+        if(gameDAO.delete(delid)) {
+            System.out.println("Game deleted successfully.");
+        } else {
+            System.out.println("Failed to delete game. Game may not exist.");
+        }
+
+        if(gameData.delete(delName, delPlatform)) {
+            System.out.println("Game deleted successfully.");
+        } else {
+            System.out.println("Failed to delete game. Game may not exist.");
+        }
+        gameList = gameDAO.getAll(); //Refresh the game list after adding a new game
+        gameList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
 
 
 

@@ -171,8 +171,43 @@ public class GameDataDAO implements DAOInterface<GameData> {
 
     @Override
     public boolean delete(int id) {
-        // Implementation for delete
-        return false;
+       try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("DELETE FROM GameData WHERE game_id = ?");
+            pStatement.setInt(1, id);
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if delete fails
+    }
+
+    public boolean delete(String name, String platform) {
+       try{
+            //This method can be used to delete a game that was listed on the wrong platform, as this is a more likely case
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("DELETE FROM GameData WHERE game_name = ? AND game_platform = ?");
+            pStatement.setString(1, name);
+            pStatement.setString(2, platform);
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if delete fails
     }
 
 }
