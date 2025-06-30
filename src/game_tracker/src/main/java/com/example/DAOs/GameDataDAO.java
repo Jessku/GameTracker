@@ -127,8 +127,46 @@ public class GameDataDAO implements DAOInterface<GameData> {
 
     @Override
     public boolean update(GameData entity) {
-        // Implementation for update
-        return false;
+         // This can be used to update game name and game platform
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("UPDATE GameData SET game_name = ?, game_platform = ? WHERE game_id = ?");
+            pStatement.setString(1, entity.getGameName());
+            pStatement.setString(2, entity.getGamePlatform());
+            pStatement.setInt(3, entity.getGameId());
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if update fails
+    }
+
+    public boolean update(GameData entity, String newValue) {
+         // This can be used to update just the game platform, as this would be the most likely case
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("UPDATE GameData SET game_platform = ? WHERE game_id = ?");
+            pStatement.setString(1, newValue);
+            pStatement.setInt(2, entity.getGameId());
+            int rowsAffected = pStatement.executeUpdate();
+            if(rowsAffected > 0) return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false; // Return false if update fails
     }
 
     @Override

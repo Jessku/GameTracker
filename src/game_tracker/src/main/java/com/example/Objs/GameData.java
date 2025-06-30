@@ -25,7 +25,7 @@ public class GameData {
     }
 
     //Getters and Setters
-    public Integer getId() {
+    public Integer getGameId() {
         return gameId;
     }
 

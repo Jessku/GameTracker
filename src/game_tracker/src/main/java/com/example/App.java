@@ -24,7 +24,7 @@ public class App
         List<UserData> userList = userDAO.getAll(); //Initial user list
         UserData newUser1 = new UserData("Hatsune Mike", "W0rld15M1n3"); //New user to be added
         UserData newUser2 = new UserData("Axl Low", "OutOfTheBox"); //New user to be added
-        UserData newUser3 = new UserData(3, "Axl Low", "0ut0f7h380x"); //New user to be added
+        UserData newUser3 = new UserData(3, "Axl Low", "0ut0f7h380x"); //New user to be updated
         Integer getid = 3;
         Integer delid = 1;
         Integer noid = 100; //ID that does not exist in the database
@@ -53,6 +53,7 @@ public class App
         //UserDataDAO.getById()
         if(userDAO.getById(noid) == null) {
             System.out.println("User not found.");
+            System.out.println();
         } else {
             System.out.println(userDAO.getById(getid).toString());
             System.out.println();
@@ -99,13 +100,20 @@ public class App
             e1.printStackTrace();
         }
 
+
+
+
+
+
         System.out.println("\n**********GAME DATA DAO TEST**********");
         //Declare Variables
         DAOInterface gameDAO = new GameDataDAO(); //DAO for GameData
+        GameDataDAO gameData = new GameDataDAO();
         List<GameData> gameList = gameDAO.getAll(); //Initial game list
         GameData newGame1 = new GameData("Guilty Gear Strive", "PS5"); //New game to be added
-        GameData newGame2 = new GameData("Triangle Strategy", "Steam"); //New game to be added
-        GameData newGame3 = new GameData("Fire Emblem: Echoes", "3DS");
+        GameData newGame2 = new GameData("Triangle Strategy", "Switch"); //New game to be added
+        GameData newGame3 = new GameData("Fire Emblem: Echoes", "3DS"); //New game to be added
+        GameData newGame4 = new GameData(3, "Gravity Rush", "PSVita"); //New game to be updated
         List<GameData> filteredGames = new ArrayList<>(); //List to hold filtered games
 
         //GameDataDAO.getAll()
@@ -129,6 +137,7 @@ public class App
         //GameDataDAO.getById()
         if(gameDAO.getById(noid) == null) {
             System.out.println("Game not found.");
+            System.out.println();
         } else {
             System.out.println(gameDAO.getById(getid).toString());
             System.out.println();
@@ -143,6 +152,21 @@ public class App
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+
+        //GameDataDAO.update()
+        if(gameData.update(gameList.get(3), "Steam")) {
+            System.out.println("Game platform updated successfully.");
+        } else {
+            System.out.println("Failed to update game platform.");
+        }
+        if(gameData.update(newGame4)) {
+            System.out.println("Game name and platform updated successfully.");
+        } else {
+            System.out.println("Failed to update game name and platform.");
+        }
+        gameList = gameDAO.getAll(); //Refresh the game list after adding a new game
+        gameList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
 
 
 
