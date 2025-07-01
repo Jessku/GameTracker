@@ -1,38 +1,105 @@
 package com.example.DAOs;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListDataDao<E> implements DAOInterface<E> {
+import com.example.ConnectionManager;
+import com.example.Objs.ListData;
+import com.example.Objs.UserData;
+
+public class ListDataDAO implements DAOInterface<ListData> {
 
     private Connection connection = null;
 
     @Override
     public void establishConnection() throws ClassNotFoundException, SQLException {
-        // Implementation for establishing connection
-        //if(connection == null)
+        if(connection == null) {
+            connection = ConnectionManager.getConnection();
+        }
     }
 
     @Override
     public void closeConnection() throws SQLException {
-        // Implementation for closing connection
+        connection.close();
     }
 
     @Override
     public List getAll() {
-        // Implementation for getAll
-        return null;
+        try{
+            establishConnection();
+            
+            //Declare Variables
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM ListData");
+            List<ListData> returnLists = new ArrayList<>();
+            ResultSet rs = pStatement.executeQuery();
+            while(rs.next()){
+                //Create UserData object from result set
+                ListData newList = new ListData(rs.getInt("list_id"), rs.getInt("user_id"));
+                returnLists.add(newList);
+            }
+            rs.close();
+            return returnLists;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public boolean create(E entity) throws SQLException {
+    public boolean create(ListData entity) throws SQLException {
+        try {
+            establishConnection();
+             
+            PreparedStatement pStatement = connection.prepareStatement("INSERT INTO ListData (user_id) VALUES (?)");
+            pStatement.setInt(1, entity.getUserId());
+        
+            int rowsAffected = pStatement.executeUpdate();
+            if (rowsAffected > 0) return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
+
         return false;
-        // Implementation for create
     }
 
+    public boolean create(UserData entity) throws SQLException { //Function is called from UserDataDAO
+        try {
+            establishConnection();
+             
+            PreparedStatement pStatement = connection.prepareStatement("INSERT INTO ListData (user_id) VALUES (?)");
+            pStatement.setInt(1, entity.getUserId());
+        
+            int rowsAffected = pStatement.executeUpdate();
+            if (rowsAffected > 0) return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
+
+        return false;
+    }
+
+
     @Override
-    public E getById(int id) {
+    public ListData getById(int id) {
         // Implementation for getById
         return null;
     }
@@ -44,7 +111,7 @@ public class ListDataDao<E> implements DAOInterface<E> {
     }
 
     @Override
-    public boolean update(E entity) {
+    public boolean update(ListData entity) {
         // Implementation for update
         return false;
     }

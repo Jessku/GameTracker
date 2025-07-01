@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.ConnectionManager;
+import com.example.Objs.ListData;
 import com.example.Objs.UserData;
 
-public class UserDataDAO implements DAOInterface {
+public class UserDataDAO implements DAOInterface<UserData> {
 
     //Declare Variables
     private Connection connection = null;
@@ -55,7 +56,7 @@ public class UserDataDAO implements DAOInterface {
     }
 
     @Override
-    public boolean create(Object entity) throws SQLException {
+    public boolean create(UserData entity) throws SQLException {
         try {
             establishConnection();
             if (entity instanceof UserData) {
@@ -64,7 +65,14 @@ public class UserDataDAO implements DAOInterface {
                 pStatement.setString(1, newUser.getUserName());
                 pStatement.setString(2, newUser.getUserPassword());
                 int rowsAffected = pStatement.executeUpdate();
-                if (rowsAffected > 0) return true;
+                if (rowsAffected > 0) {
+                    //If user creation is successful, we also need to create a new list for the user
+                    ListDataDAO listDAO = new ListDataDAO();
+                    
+                    UserData listForUser = (UserData) getByCondition(entity.getUserName()).get(0); // Get the user ID for the new user
+                    listDAO.create(listForUser); // Create a new list for the user
+                    return true;}
+
             } else {
                 throw new IllegalArgumentException("Entity must be of type UserData");
             }
@@ -80,7 +88,7 @@ public class UserDataDAO implements DAOInterface {
     }
 
     @Override
-    public Object getById(int id) {
+    public UserData getById(int id) {
         try{
             establishConnection();
             PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM UserData WHERE user_id = ?");
@@ -128,7 +136,7 @@ public class UserDataDAO implements DAOInterface {
     }
 
     @Override
-    public boolean update(Object entity) {
+    public boolean update(UserData entity) {
         // This can be used to update username and password
         try{
             establishConnection();

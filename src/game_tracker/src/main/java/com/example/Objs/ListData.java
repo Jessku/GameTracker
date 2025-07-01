@@ -3,22 +3,22 @@ package com.example.Objs;
 public class ListData {
 
     //Declare Vartiables
-    private Integer id;
+    private Integer listId;
     private Integer userId;
 
     //Constructor
     public ListData(Integer id, Integer userId) {
         super();
-        this.id = id;
+        this.listId = id;
         this.userId = userId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getListId() {
+        return listId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setListId(Integer id) {
+        this.listId = id;
     }
 
     public Integer getUserId() {
@@ -31,7 +31,7 @@ public class ListData {
 
     @Override
     public String toString() {
-        return "ListData [id=" + id + ", userId=" + userId + "]";
+        return "ListData [id=" + listId + ", userId=" + userId + "]";
     }
 
 }

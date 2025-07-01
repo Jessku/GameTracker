@@ -50,3 +50,4 @@ CREATE TABLE ListItems
 );
 
 INSERT INTO UserData (user_name, user_password) VALUES ('UserName', 'Password'); --Adjust these as you like for testing
+INSERT INTO ListData (user_id) VALUES (1);
