@@ -6,8 +6,10 @@ import java.util.List;
 
 import com.example.DAOs.DAOInterface;
 import com.example.DAOs.GameDataDAO;
+import com.example.DAOs.ListDataDAO;
 import com.example.DAOs.UserDataDAO;
 import com.example.Objs.GameData;
+import com.example.Objs.ListData;
 import com.example.Objs.UserData;
 
 /**
@@ -188,6 +190,89 @@ public class App
         System.out.println();
 
 
+
+
+
+
+        System.out.println("\n**********LIST DATA DAO TEST**********");
+
+        //Declare Variables
+        DAOInterface listDAO = new ListDataDAO(); //DAO for ListData
+        ListDataDAO listData = new ListDataDAO(); //For overloaded methods
+        List<ListData> listList = listDAO.getAll(); //Initial list list
+        List<ListData> filteredLists = new ArrayList<>(); //List to hold filtered lists
+        ListData newList1 = new ListData(1, 2); //New list to be added
+        ListData newList2 = new ListData(2, 3, "Hatsune Games"); //New list to be added
+        ListData newList3 = new ListData(3, 2, "Gamer Games"); //New list to be added
+
+        //ListDataDAO.getAll()
+        listList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
+        //ListDataDAO.create()
+        try {
+            listDAO.create(newList2);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        try {
+            listData.create(newList1); //Using overloaded method
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } 
+        listList = listDAO.getAll(); //Refresh the list of lists after adding a new game
+        listList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
+        //ListDataDAO.getById()
+        if(listDAO.getById(getid) == null) {
+            System.out.println("List not found.");
+            System.out.println();
+        } else { 
+            System.out.println(listDAO.getById(2).toString());
+            System.out.println();
+        }
+
+        //ListDataDAO.getByCondition()
+        try {
+            filteredLists = listDAO.getByCondition("Hatsune Games");
+            filteredLists.forEach(e -> {System.out.println(e.toString());});
+            System.out.println();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        //ListDataDAO.update()
+        if(listData.update(listList.get(0), "Axl's Games")) {
+            System.out.println("List name updated successfully.");
+        } else {
+            System.out.println("Failed to update list name.");
+        }
+        if(listData.update(newList3)) {
+            System.out.println("List name updated successfully.");
+        } else {
+            System.out.println("Failed to update list name.");
+        }
+
+        listList = listDAO.getAll(); //Refresh the list of lists after adding a new game
+        listList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
+        //ListDataDAO.delete()
+        if(listDAO.delete(4)) {
+            System.out.println("List deleted successfully.");
+            listList = listDAO.getAll(); //Refresh the list of lists after adding a new game
+            listList.forEach(e-> {System.out.println(e.toString());});
+            System.out.println();
+        } else {
+            System.out.println("Failed to delete list. List may not exist.");
+            System.out.println();
+        }
+
+        
 
 
 

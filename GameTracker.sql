@@ -30,6 +30,7 @@ CREATE TABLE ListData
 (
 	list_id SERIAL PRIMARY KEY,
 	user_id INTEGER,
+	list_name VARCHAR(255),
 	FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
 	
 );
@@ -50,4 +51,4 @@ CREATE TABLE ListItems
 );
 
 INSERT INTO UserData (user_name, user_password) VALUES ('UserName', 'Password'); --Adjust these as you like for testing
-INSERT INTO ListData (user_id) VALUES (1);
+INSERT INTO ListData (user_id, list_name) VALUES (1, 'New List');
