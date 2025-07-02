@@ -21,3 +21,6 @@ INSERT INTO GameData (game_name, game_platform) VALUES ('Titantfall 2', 'EA Laun
 --PS3 games
 
 --Wii U games
+
+--ItemLists
+INSERT INTO ListItems (list_id, game_id, item_status) VALUES (1, 2, 'not_started');

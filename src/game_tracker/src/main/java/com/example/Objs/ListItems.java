@@ -5,7 +5,7 @@ import java.sql.Date;
 public class ListItems {
 
     //Declare Variables
-    private Integer id;
+    private Integer itemId;
     private Integer listId;
     private Integer gameId;
     private String status;
@@ -16,7 +16,7 @@ public class ListItems {
     //Constructors
     public ListItems(Integer id, Integer listId, Integer gameId, String status, Date dateAdded, Date dateInProgress, Date dateCompleted) {
         super();
-        this.id = id;
+        this.itemId = id;
         this.listId = listId;
         this.gameId = gameId;
         this.status = status;
@@ -25,23 +25,23 @@ public class ListItems {
         this.dateCompleted = dateCompleted;
     }
 
-    public ListItems(Integer id, Integer listId, Integer gameId, String status) {
+    public ListItems(Integer listId, Integer gameId) {
         super();
-        this.id = id;
+        this.itemId = null; // Item ID will be auto-generated
         this.listId = listId;
         this.gameId = gameId;
-        this.status = status;
+        this.status = null; // Default status
         this.dateAdded = null;
         this.dateInProgress = null;
         this.dateCompleted = null;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setItemId(Integer id) {
+        this.itemId = id;
     }
 
     public Integer getListId() {
@@ -94,7 +94,7 @@ public class ListItems {
 
     @Override
     public String toString() {
-        return "ListItems [id=" + id + ", listId=" + listId + ", gameId=" + gameId + ", status=" + status + 
+        return "ListItems [id=" + itemId + ", listId=" + listId + ", gameId=" + gameId + ", status=" + status + 
                ", dateAdded=" + dateAdded + ", dateInProgress=" + dateInProgress + ", dateCompleted=" + dateCompleted + "]";
     }
     

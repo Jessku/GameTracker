@@ -123,7 +123,7 @@ public class ListDataDAO implements DAOInterface<ListData> {
 
     @Override
     public List getByCondition(String condition) throws SQLException {
-       try{
+       try{ //Most common condition is to get a list for a user, so condition is the name of the list
             establishConnection();
             PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM ListData WHERE list_name = ?");
             pStatement.setString(1, condition);

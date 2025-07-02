@@ -38,13 +38,13 @@ CREATE TABLE ListData
 
 CREATE TABLE ListItems
 (
-	li_id SERIAL PRIMARY KEY,
+	item_id SERIAL PRIMARY KEY,
 	list_id INTEGER,
 	game_id INTEGER,
-	li_status status_enum NOT NULL,
-	li_added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	li_inprogress_at TIMESTAMP,
-	li_completed_at TIMESTAMP,
+	item_status status_enum DEFAULT 'not_started',
+	item_added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	item_inprogress_at TIMESTAMP,
+	item_completed_at TIMESTAMP,
 	FOREIGN KEY (list_id) REFERENCES ListData (list_id) ON DELETE CASCADE,
 	FOREIGN KEY (game_id) REFERENCES GameData (game_id) ON DELETE CASCADE
 	

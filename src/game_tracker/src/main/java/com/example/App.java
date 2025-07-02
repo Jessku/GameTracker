@@ -7,9 +7,11 @@ import java.util.List;
 import com.example.DAOs.DAOInterface;
 import com.example.DAOs.GameDataDAO;
 import com.example.DAOs.ListDataDAO;
+import com.example.DAOs.ListItemsDAO;
 import com.example.DAOs.UserDataDAO;
 import com.example.Objs.GameData;
 import com.example.Objs.ListData;
+import com.example.Objs.ListItems;
 import com.example.Objs.UserData;
 
 /**
@@ -27,8 +29,8 @@ public class App
         UserData newUser1 = new UserData("Hatsune Mike", "W0rld15M1n3"); //New user to be added
         UserData newUser2 = new UserData("Axl Low", "OutOfTheBox"); //New user to be added
         UserData newUser3 = new UserData(3, "Axl Low", "0ut0f7h380x"); //New user to be updated
-        Integer getid = 3;
-        Integer delid = 1;
+        Integer getid = 3; //ID of the user to be retrieved
+        Integer delid = 4; //ID of the user to be deleted
         Integer noid = 100; //ID that does not exist in the database
 
 
@@ -271,6 +273,119 @@ public class App
             System.out.println("Failed to delete list. List may not exist.");
             System.out.println();
         }
+        
+
+
+
+
+
+        System.out.println("\n**********LIST ITEMS DAO TEST**********");
+        //Declare Variables
+        DAOInterface listItemsDAO = new ListItemsDAO(); //DAO for ListItems
+        ListItemsDAO itemsData = new ListItemsDAO(); //For overloaded methods
+        List<ListItems> itemsList = listItemsDAO.getAll(); //Initial list of items list
+        List<ListItems> filteredItems = new ArrayList<>(); //List to hold filtered items
+        ListItems newItem1 = new ListItems(1, 5); //New item to be added
+
+        //ListItemsDAO.getAll()
+        itemsList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
+        //ListItemsDAO.create()
+        try {
+            if(listItemsDAO.create(newItem1)) {
+                System.out.println("List item created successfully.");
+            } else {
+                System.out.println("Failed to create list item.");
+            }
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        try {
+            if(itemsData.create(listList.get(0), gameList.get(0))) { //Using overloaded method
+                System.out.println("List item created successfully.");
+            } else {
+                System.out.println("Failed to create list item.");
+            }
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        itemsList = listItemsDAO.getAll(); //Refresh the list of items after adding a new item
+        itemsList.forEach(e-> {System.out.println(e.toString());});
+        System.out.println();
+
+        //ListItemsDAO.getById()
+        if(listItemsDAO.getById(getid) == null) {
+            System.out.println("List item not found.");
+            System.out.println();
+        } else {
+            System.out.println(listItemsDAO.getById(getid).toString());
+            System.out.println();
+        }
+
+        //ListItemsDAO.getByCondition()
+        try { 
+            filteredItems = listItemsDAO.getByCondition("not_started");
+            filteredItems.forEach(e -> {System.out.println(e.toString());});
+            System.out.println();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }  
+
+        //ListItemsDAO.update()
+        if(itemsData.update(itemsList.get(0))) {
+            System.out.println("List item status updated successfully.");
+            itemsList = listItemsDAO.getAll(); //Refresh the list of items after adding a new item
+            itemsList.forEach(e-> {System.out.println(e.toString());});
+            System.out.println();
+        } else {
+            System.out.println("Failed to update list item status.");
+        }
+
+        //ListItemsDAO.delete()
+        if(listItemsDAO.delete(delid)) {
+            System.out.println("List item deleted successfully.");
+            itemsList = listItemsDAO.getAll(); //Refresh the list of items after adding a new item
+            itemsList.forEach(e-> {System.out.println(e.toString());});
+            System.out.println();
+        }
+        else {
+            System.out.println("Failed to delete list item. List item may not exist.");
+            System.out.println();
+        }
+        
+        
+
+
+
+
+
+        // Prepare the text
+        String completeText = "COMPLETE";
+        int width = 80; // Assuming console width ~80 chars
+
+        // Add color and bold using ANSI (optional)
+        String RED_BOLD = "\033[1;31m";
+        String RESET = "\033[0m";
+
+        // Center it
+        int padding = (width - completeText.length()) / 2;
+        String spaces = " ".repeat(Math.max(0, padding));
+
+        // Dramatic pause
+        //Thread.sleep(800);
+        System.out.println("\n\n\n\n\n\n\n\n\n\n");
+        System.out.println(spaces + RED_BOLD + completeText + RESET);
+        System.out.println("\n\n");
+
+        // Pause before exit
+        //Thread.sleep(1500);
+
+
 
         
 
