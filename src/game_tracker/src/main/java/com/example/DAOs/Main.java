@@ -1,5 +1,6 @@
 package com.example.DAOs;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -63,6 +64,43 @@ public class Main {
         if (!loginSuccess) System.out.println("Login failed, please try again.");
     }
 }
+   
+    public void register(){
+        // This method will handle the registration process.
+
+        //Declare Variables
+        Scanner scanner = new Scanner(System.in); //Used to read user input
+        UserDataDAO user = new UserDataDAO(); // DAO for UserData
+        boolean confirm = false;
+        String username = null;
+        String password = null;
+
+
+            while(!confirm){
+                //Prompt user for username and password
+                System.out.println("Username: ");
+                username = scanner.nextLine();
+                System.out.println("Password: ");
+                password = scanner.nextLine();
+                System.out.println("Username entered: " + username);
+                System.out.println("Password entered: " + password);
+                System.out.println("Is this right?(y/n)");
+                char choice = scanner.nextLine().charAt(0);
+                if(choice == 'y') confirm = true;
+            }
+            UserData newUser = new UserData(username, password);
+            try {
+                user.create(newUser);
+                System.out.println("Registration successful! Welcome, " + username + "!");
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.out.println("Registration failed. Please try again.");
+            }
+            
+
+
+    }
     public static void main(String[] args) {
         // This is the main method that starts the application.
         // It will call the loginMenu method to display the login options.
@@ -78,7 +116,7 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Register selected.");
-                // Call register method here
+                main.register();
                 break;
             case 3:
                 System.out.println("Exiting application.");
