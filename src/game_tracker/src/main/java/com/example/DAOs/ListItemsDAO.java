@@ -153,7 +153,9 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
             establishConnection();
             PreparedStatement pStatement = connection.prepareStatement("UPDATE ListItems SET item_status = ?::status_enum WHERE item_id = ?");
             //Depending of the status of the item, we will update the specific field
-            if(entity.getStatus().equals("not_started"))  pStatement.setString(1, "in_progress");
+            if(entity.getStatus().equals("not_started")) {
+                 pStatement.setString(1, "in_progress");
+            }
             else if(entity.getStatus().equals("in_progress"))  pStatement.setString(1, "completed");
             else if(entity.getStatus().equals("completed")) pStatement.setString(1, "not_started");
             

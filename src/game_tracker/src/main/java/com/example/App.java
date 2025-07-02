@@ -382,7 +382,7 @@ public class App
         System.out.println(spaces + RED_BOLD + completeText + RESET);
         System.out.println("\n\n");
 
-        // Pause before exit
+        //Pause before exit
         //Thread.sleep(1500);
 
 
