@@ -17,6 +17,7 @@ INSERT INTO GameData (game_name, game_platform) VALUES ('Kingdom Hearts 1.5 + 2.
 INSERT INTO GameData (game_name, game_platform) VALUES ('Titantfall 2', 'EA Launcher');
 
 --GameCube games
+INSERT INTO GameData (game_name, game_platform) VALUES ('Shadow The Hedgehog', 'GameCube');
 
 --PS3 games
 
