@@ -149,6 +149,35 @@ public class ListDataDAO implements DAOInterface<ListData> {
         }
     }
 
+    public List getByCondition(int condition) throws SQLException {
+       try{ //Most common condition is to get a list for a user, so condition is the name of the list
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("SELECT l.list_id, l.list_name \n" + //
+                                                                        "FROM ListData l\n" + //
+                                                                        "INNER JOIN UserData u ON l.user_id = u.user_id\n" + //
+                                                                        "WHERE u.user_id = ?\n" + //
+                                                                        "ORDER BY l.list_id");
+            pStatement.setInt(1, condition);
+            ResultSet rs = pStatement.executeQuery();
+            List<ListData> returnLists = new ArrayList<>();
+            while(rs.next()){
+                //Create UserData object from result set
+                ListData list = new ListData(rs.getInt("list_id"), rs.getInt("user_id"), rs.getString("list_name"));
+                returnLists.add(list);
+            }
+            rs.close();
+            return returnLists;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+            throw new SQLException("Database connection error");
+        }
+    }
+
     @Override
     public boolean update(ListData entity) {
          try{
@@ -211,7 +240,7 @@ public class ListDataDAO implements DAOInterface<ListData> {
         return false; // Return false if delete fails
     }
 
-    public List<UserListItem> getListsForUser(int userId) {
+    public List<UserListItem> getListForUser(int userId) {
 
         try{
             establishConnection();
