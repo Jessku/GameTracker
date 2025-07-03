@@ -9,7 +9,9 @@ import java.util.List;
 
 import com.example.ConnectionManager;
 import com.example.Objs.ListData;
+import com.example.Objs.ListItems;
 import com.example.Objs.UserData;
+import com.example.Objs.UserListItem;
 
 public class ListDataDAO implements DAOInterface<ListData> {
 
@@ -207,6 +209,39 @@ public class ListDataDAO implements DAOInterface<ListData> {
             return false;
         }
         return false; // Return false if delete fails
+    }
+
+    public List<UserListItem> getListsForUser(int userId) {
+
+        try{
+            establishConnection();
+            PreparedStatement pStatement = connection.prepareStatement("SELECT l.list_name, i.item_id, g.game_name, g.game_platform, i.item_status\n" + //
+                                                                        "FROM ListItems i\n" + //
+                                                                        "INNER JOIN GameData g ON i.game_id = g.game_id\n" + //
+                                                                        "INNER JOIN ListData l ON i.list_id = l.list_id\n" + //
+                                                                        "INNER JOIN UserData u ON l.user_id = u.user_id\n" + //
+                                                                        "WHERE u.user_ID = ? \n" + //
+                                                                        "ORDER BY i.item_added_at;");
+            pStatement.setInt(1, userId);
+            ResultSet rs = pStatement.executeQuery();
+            List<UserListItem> returnList = new ArrayList<>();
+
+            while(rs.next()){
+                UserListItem newItem = new UserListItem(rs.getString("list_name"), rs.getInt("item_id"), rs.getString("game_name"), rs.getString("game_platform"), rs.getString("item_status"));
+                returnList.add(newItem);
+            }
+            rs.close();
+            return returnList;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
