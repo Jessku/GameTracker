@@ -133,9 +133,10 @@ public class Main {
         ListItemsDAO itemsDAO = new ListItemsDAO();
         ListData listData = null;
         Scanner scanner = new Scanner(System.in);
-        Integer choice1;
-        Integer choice2;
-        Integer choice3;
+        Integer choice1; //List num
+        Integer choice2; // Menu num
+        Integer choice3; //Update num
+        Integer choice4; //Delete num
         String newName;
 
         try {
@@ -152,8 +153,9 @@ public class Main {
                 ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                 System.out.println("\n 1. Edit List Name");
                 System.out.println(" 2. Add Game");
-                System.out.println(" 3. Edit Game Progress");
-                System.out.println(" 4. Exit");
+                System.out.println("3. Remove Game");
+                System.out.println(" 4. Edit Game Progress");
+                System.out.println(" 0. Exit");
                 choice2 = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
                 if(choice2 == 1){
@@ -168,16 +170,29 @@ public class Main {
                 }
                 else if(choice2 == 2){
                     itemsDAO.addGame(listData);
-                    ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list1
+                    ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     
                 }
                 else if(choice2 == 3){
+                    System.out.println("Please enter the item_id of the item you wish to remove: ");
+                    choice4 = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
+                    if(itemsDAO.delete(choice4)){
+                        System.out.println("Item removed successfully.");
+                        ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                    }
+                    else {
+                        System.out.println("Failed to remove item.");
+                    }
+                }
+                else if(choice2 == 4){
                     ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());});
                     System.out.println("\nPlease enter the item_id of the item you wish to update the status of: ");
                     choice3 = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline character
                     if(itemsDAO.update(itemsDAO.getById(choice3))){
                         System.out.println("Item status updated successfully.");
+                        ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     }
                     else {
                         System.out.println("Failed to update item status.");

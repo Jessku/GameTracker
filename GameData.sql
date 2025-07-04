@@ -9,7 +9,7 @@ INSERT INTO GameData (game_name, game_platform) VALUES ('Gravity Rush', 'PS4');
 INSERT INTO GameData (game_name, game_platform) VALUES ('Triangle Strategy', 'Switch');
 INSERT INTO GameData (game_name, game_platform) VALUES ('Pokemon Scarlet', 'Switch');
 INSERT INTO GameData (game_name, game_platform) VALUES ('Octopath Traveler', 'Switch');
-
+INSERT INTO GameData (game_name, game_platform) VALUES ('Pokemon Legends: Arceus', 'Switch');
 
 --PC games
 INSERT INTO GameData (game_name, game_platform) VALUES ('Date Everything', 'Steam');
