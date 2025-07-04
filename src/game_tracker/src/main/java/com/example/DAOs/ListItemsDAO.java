@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.example.ConnectionManager;
 import com.example.Objs.GameData;
@@ -151,17 +152,27 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
     public boolean update(ListItems entity) {
         try{ //This automatically updates the status of the item from what could be a single button press in the UI
             establishConnection();
+            boolean isUpdateTime = false; //controls if we execute tStatement
+            PreparedStatement tStatement = null;
             PreparedStatement pStatement = connection.prepareStatement("UPDATE ListItems SET item_status = ?::status_enum WHERE item_id = ?");
             //Depending of the status of the item, we will update the specific field
             if(entity.getStatus().equals("not_started")) {
                  pStatement.setString(1, "in_progress");
+                 tStatement = connection.prepareStatement("UPDATE ListItems SET item_inprogress_at = CURRENT_TIMESTAMP WHERE item_id = ?"); //Updates the approptiate timestamp column
+                 isUpdateTime = true;
             }
-            else if(entity.getStatus().equals("in_progress"))  pStatement.setString(1, "completed");
+            else if(entity.getStatus().equals("in_progress")){
+                pStatement.setString(1, "completed");
+                tStatement = connection.prepareStatement("UPDATE ListItems SET item_completed_at = CURRENT_TIMESTAMP WHERE item_id = ?"); //Updates the approptiate timestamp column
+                isUpdateTime = true;
+            }
             else if(entity.getStatus().equals("completed")) pStatement.setString(1, "not_started");
             
             pStatement.setInt(2, (entity).getItemId());
+            tStatement.setInt(1, (entity).getItemId());
 
             int rowsAffected = pStatement.executeUpdate();
+            if(isUpdateTime) tStatement.executeUpdate(); //Only updates if necessary
             if(rowsAffected > 0) return true;
         }
         catch(SQLException e){
@@ -193,6 +204,47 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
             return false;
         }
         return false; // Return false if delete fails
+    }
+
+    public boolean addGame(ListData list) {
+        try{
+            establishConnection();
+            //Declare Variables
+            GameDataDAO gameDAO = new GameDataDAO();
+            List<GameData> games = gameDAO.getAll();
+            PreparedStatement pStatement = connection.prepareStatement("INSERT INTO ListItems (list_id, game_id) VALUES (?, ?)");
+            Scanner scanner = new Scanner(System.in);
+            int choice;
+
+            games.forEach(e -> {System.out.println(e.toString());});
+            System.out.println("\nPlease enter the game_id of the game you wish to add (0 to exit): ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+            if(choice != 0){
+                pStatement.setInt(1, list.getListId());
+                pStatement.setInt(2, choice);
+                if (pStatement.executeUpdate() > 0){
+                    System.out.println(gameDAO.getById(choice).getGameName() + " added successfully.");
+                    return true;
+                }
+                else{
+                    System.out.println("Failed to add game.");
+                    return false;
+                }
+            }
+            else{
+                System.out.println("Exiting...");
+                return false;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.ConnectionManager;
+import com.example.Objs.GameData;
 import com.example.Objs.ListData;
 import com.example.Objs.ListItems;
 import com.example.Objs.UserData;
@@ -150,7 +151,7 @@ public class ListDataDAO implements DAOInterface<ListData> {
     }
 
     public List getByCondition(int condition) throws SQLException {
-       try{ //Most common condition is to get a list for a user, so condition is the name of the list
+       try{ //Condition for a console app is the id of the list
             establishConnection();
             PreparedStatement pStatement = connection.prepareStatement("SELECT l.list_id, l.list_name \n" + //
                                                                         "FROM ListData l\n" + //
@@ -162,7 +163,7 @@ public class ListDataDAO implements DAOInterface<ListData> {
             List<ListData> returnLists = new ArrayList<>();
             while(rs.next()){
                 //Create UserData object from result set
-                ListData list = new ListData(rs.getInt("list_id"), rs.getInt("user_id"), rs.getString("list_name"));
+                ListData list = new ListData(rs.getInt("list_id"), condition, rs.getString("list_name"));
                 returnLists.add(list);
             }
             rs.close();
