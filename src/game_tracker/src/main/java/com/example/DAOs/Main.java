@@ -105,7 +105,7 @@ public class Main {
     }
 
     public int mainMenu(){
-         int choice = 0;
+        int choice = 0;
         Scanner scanner = new Scanner(System.in);
 
         //Display menu options
@@ -153,7 +153,7 @@ public class Main {
                 ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                 System.out.println("\n 1. Edit List Name");
                 System.out.println(" 2. Add Game");
-                System.out.println("3. Remove Game");
+                System.out.println(" 3. Remove Game");
                 System.out.println(" 4. Edit Game Progress");
                 System.out.println(" 0. Exit");
                 choice2 = scanner.nextInt();
@@ -174,6 +174,7 @@ public class Main {
                     
                 }
                 else if(choice2 == 3){
+                    ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     System.out.println("Please enter the item_id of the item you wish to remove: ");
                     choice4 = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline character
@@ -186,7 +187,7 @@ public class Main {
                     }
                 }
                 else if(choice2 == 4){
-                    ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());});
+                      ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     System.out.println("\nPlease enter the item_id of the item you wish to update the status of: ");
                     choice3 = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline character
@@ -205,7 +206,6 @@ public class Main {
                 System.out.println("Exiting...");
             }
 
-
             
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -215,6 +215,9 @@ public class Main {
 
     }
 
+    public boolean createList(){
+        return false;
+    }
 
 
     public static void main(String[] args) {  //This is the main method that starts the application.
