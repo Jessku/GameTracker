@@ -34,7 +34,7 @@ public class UserDataDAO implements DAOInterface<UserData> {
             establishConnection();
             
             //Declare Variables
-            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM UserData");
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM UserData ORDER BY user_id");
             List<UserData> returnUsers = new ArrayList<>();
             ResultSet rs = pStatement.executeQuery();
             while(rs.next()){

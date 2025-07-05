@@ -34,7 +34,7 @@ public class GameDataDAO implements DAOInterface<GameData> {
             establishConnection();
             
             //Declare Variables
-            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM GameData");
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM GameData ORDER BY game_id");
             List<GameData> returnGames = new ArrayList<>();
             ResultSet rs = pStatement.executeQuery();
             while(rs.next()){

@@ -36,7 +36,7 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
             establishConnection();
             
             //Declare Variables
-            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM ListItems");
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM ListItems ORDER BY item_id");
             List<ListItems> returnItems = new ArrayList<>();
             ResultSet rs = pStatement.executeQuery();
             while(rs.next()){

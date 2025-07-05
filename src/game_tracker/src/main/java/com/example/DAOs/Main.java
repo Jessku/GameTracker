@@ -68,7 +68,7 @@ public class Main {
         return null;
 }
    
-    public void register(){ //This method will handle the registration process.
+    public UserData register(){ //This method will handle the registration process.
 
         //Declare Variables
         Scanner scanner = new Scanner(System.in); //Used to read user input
@@ -94,10 +94,12 @@ public class Main {
             try {
                 user.create(newUser);
                 System.out.println("Registration successful! Welcome, " + username + "!");
+                return newUser;
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 System.out.println("Registration failed. Please try again.");
+                return null;
             }
             
 
@@ -150,7 +152,7 @@ public class Main {
             if(choice1 != 0){
                 listData = ListDAO.getById(choice1); //copies instance of list
                 System.out.println(listData.toString());
-                ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                 System.out.println("\n 1. Edit List Name");
                 System.out.println(" 2. Add Game");
                 System.out.println(" 3. Remove Game");
@@ -170,30 +172,30 @@ public class Main {
                 }
                 else if(choice2 == 2){
                     itemsDAO.addGame(listData);
-                    ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                    ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     
                 }
                 else if(choice2 == 3){
-                    ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                    ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     System.out.println("Please enter the item_id of the item you wish to remove: ");
                     choice4 = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline character
                     if(itemsDAO.delete(choice4)){
                         System.out.println("Item removed successfully.");
-                        ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                        ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     }
                     else {
                         System.out.println("Failed to remove item.");
                     }
                 }
                 else if(choice2 == 4){
-                      ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                      ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     System.out.println("\nPlease enter the item_id of the item you wish to update the status of: ");
                     choice3 = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline character
                     if(itemsDAO.update(itemsDAO.getById(choice3))){
                         System.out.println("Item status updated successfully.");
-                        ListDAO.getListForUser(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
+                        ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     }
                     else {
                         System.out.println("Failed to update item status.");
@@ -215,9 +217,41 @@ public class Main {
 
     }
 
-    public boolean createList(){
+    public void createList(int user_id){
+        //Declare Variables
+        Scanner scanner = new Scanner(System.in);
+        ListDataDAO ListDAO = new ListDataDAO();
+        String listName;
+
+        System.out.println("Please enter the name of the list you'd like to create:");
+        listName = scanner.nextLine();
+        ListData newList = new ListData(user_id, listName);
+        try {
+            if(ListDAO.create(newList)){
+                System.out.println("List created successfully.");
+                ListDAO.getByCondition(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the user's lists
+            }
+            else System.out.println("Failed to create list.");
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean deleteList(){
         return false;
     }
+
+    public UserData changeUsername(){
+        return null;
+    }
+
+    public UserData changePassword(){
+        return null;
+    }
+
 
 
     public static void main(String[] args) {  //This is the main method that starts the application.
@@ -238,7 +272,7 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Register selected.");
-                main.register();
+                user = main.register();
                 break;
             case 3:
                 System.out.println("Exiting application.");
@@ -264,7 +298,7 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Create List selected.");
-                main.register();
+                main.createList(user.getUserId());
                 break;
             case 3:
                 System.out.println("Delete List selected.");

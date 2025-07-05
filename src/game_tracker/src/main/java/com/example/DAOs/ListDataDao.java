@@ -36,7 +36,7 @@ public class ListDataDAO implements DAOInterface<ListData> {
             establishConnection();
             
             //Declare Variables
-            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM ListData");
+            PreparedStatement pStatement = connection.prepareStatement("SELECT * FROM ListData ORDER BY list_id");
             List<ListData> returnLists = new ArrayList<>();
             ResultSet rs = pStatement.executeQuery();
             while(rs.next()){
@@ -241,7 +241,7 @@ public class ListDataDAO implements DAOInterface<ListData> {
         return false; // Return false if delete fails
     }
 
-    public List<UserListItem> getListForUser(int userId) {
+    public List<UserListItem> getListForUser(int userId, String name) {
 
         try{
             establishConnection();
@@ -250,9 +250,10 @@ public class ListDataDAO implements DAOInterface<ListData> {
                                                                         "INNER JOIN GameData g ON i.game_id = g.game_id\n" + //
                                                                         "INNER JOIN ListData l ON i.list_id = l.list_id\n" + //
                                                                         "INNER JOIN UserData u ON l.user_id = u.user_id\n" + //
-                                                                        "WHERE u.user_ID = ? \n" + //
+                                                                        "WHERE u.user_ID = ? AND l.list_name = ?\n" + //
                                                                         "ORDER BY i.item_added_at;");
             pStatement.setInt(1, userId);
+            pStatement.setString(2, name);
             ResultSet rs = pStatement.executeQuery();
             List<UserListItem> returnList = new ArrayList<>();
 
