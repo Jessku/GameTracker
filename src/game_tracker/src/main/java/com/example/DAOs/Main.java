@@ -217,7 +217,8 @@ public class Main {
 
     }
 
-    public void createList(int user_id){
+    public void createList(int user_id){ //This method will handle the creation of lists.
+
         //Declare Variables
         Scanner scanner = new Scanner(System.in);
         ListDataDAO ListDAO = new ListDataDAO();
@@ -240,8 +241,27 @@ public class Main {
 
     }
 
-    public boolean deleteList(){
-        return false;
+    public void deleteList(int user_id){ //This method will handle the deletion of lists
+        //Declare Variables
+        ListDataDAO ListDAO = new ListDataDAO();
+        Integer delId;
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            ListDAO.getByCondition(user_id).forEach(e -> {System.out.println(e.toString());});
+            System.out.println("Please enter the list_id of the list you wish to delete: ");
+            delId = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+            if(ListDAO.delete(delId)){
+                System.out.println("List deleted successfully.");
+                ListDAO.getByCondition(user_id).forEach(e -> {System.out.println(e.toString());}); //Prints the user's lists
+            }
+            else System.out.println("Failed to delete list.");
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
     }
 
     public UserData changeUsername(){
@@ -302,6 +322,7 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Delete List selected.");
+                main.deleteList(user.getUserId());
                 break;
             case 4:
                 System.out.println("Change Username selected.");
