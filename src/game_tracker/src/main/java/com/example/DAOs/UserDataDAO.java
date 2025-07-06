@@ -159,7 +159,7 @@ public class UserDataDAO implements DAOInterface<UserData> {
     }
 
     public boolean update(Object entity, char updateType, String newValue) {
-        // This can be used to update username and password
+        // This can be used to update username or password
         try{
             establishConnection();
             PreparedStatement pStatement = null;

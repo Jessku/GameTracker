@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.example.Objs.ListData;
-import com.example.Objs.ListItems;
 import com.example.Objs.UserData;
 
 public class Main {
@@ -106,7 +105,7 @@ public class Main {
 
     }
 
-    public int mainMenu(){
+    public int mainMenu(){ //This method will display the main menu. It will return an integer representing the user's choice
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
 
@@ -264,12 +263,58 @@ public class Main {
         } 
     }
 
-    public UserData changeUsername(){
-        return null;
+    public void changeUsername(UserData user){ //This method will handle updating username
+        //Declare Variables
+        Scanner scanner = new Scanner(System.in);
+        UserDataDAO userDAO = new UserDataDAO();
+        boolean confirm = false;
+        String newName = null;
+        Character choice;
+
+       while(!confirm){
+        System.out.println("Please enter the new username: ");
+        newName = scanner.nextLine();
+        System.out.println(newName + "is this right(y/n)?");
+        choice = scanner.nextLine().charAt(0);
+        if(choice == 'y') confirm = true;
+
+       }
+
+       if(userDAO.update(user, 'n', newName)){
+        System.out.println("Username updated successfully.");
+        user.setUserName(newName);
+       }
+       else System.out.println("Failed to update username.");
     }
 
-    public UserData changePassword(){
-        return null;
+    public void changePassword(UserData user){ //This method will handle updating password
+         //Declare Variables
+        Scanner scanner = new Scanner(System.in);
+        UserDataDAO userDAO = new UserDataDAO();
+        boolean confirm = false;
+        String newPass = null;
+        String oldPass = null;
+        String confirmPass = null;
+
+       while(!confirm){
+        System.out.println("Please enter your current password: ");
+        oldPass = scanner.nextLine();
+        if(user.getUserPassword().equals(oldPass)){
+            System.out.println("Please enter your new password: ");
+            newPass = scanner.nextLine();
+            System.out.println("Please confirm your new password:");
+            confirmPass = scanner.nextLine();
+            if(newPass.equals(confirmPass)) confirm = true;
+            else System.out.println("Passwords do not match. Please try again.");
+        }
+
+       }
+
+       if(userDAO.update(user, 'p', newPass)) {
+        System.out.println("Password updated successfully.");
+        user.setUserPassword(newPass);
+    }
+       else System.out.println("Failed to update password.");
     }
 
 
@@ -278,8 +323,8 @@ public class Main {
         
         Main main = new Main(); // Create an instance of the Main class to access its methods
         int loginChoice = main.loginMenu(); //It will call the loginMenu method to display the login options.
-        UserData user = null; //Saves the UserData of the logged in user as an instance
-        boolean isExit = false;
+        UserData user = null; //Saves the UserData of the logged-in user as an instance
+        boolean isExit = false; //Loops the program
 
 
 
@@ -303,15 +348,9 @@ public class Main {
         }
 
         //MAIN MENU
-        ListItemsDAO listItemsDAO = new ListItemsDAO();
-
-        List<ListItems> listItems = listItemsDAO.getAll();
-
-
-         // Handle user choice
          while(!isExit){
             int mainChoice = main.mainMenu(); //It will call the mainMenu method to display the main menu options.
-            switch (mainChoice) {
+            switch (mainChoice) { //Handles user choice
             case 1:
                 System.out.println("View/Edit Lists selected.");
                 main.viewEditList(user.getUserId());
@@ -326,9 +365,11 @@ public class Main {
                 break;
             case 4:
                 System.out.println("Change Username selected.");
+                main.changeUsername(user);
                 break;
             case 5:
                 System.out.println("Change Password selected.");
+                main.changePassword(user);
                 break;
             case 0:
                 System.out.println("Exiting application.");
