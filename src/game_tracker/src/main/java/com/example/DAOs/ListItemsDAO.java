@@ -253,15 +253,20 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
         return false;
     }
 
-    private boolean dupeCheckGame(ListData list, int user_id, GameData game){
+    private boolean dupeCheckGame(ListData list, int user_id, GameData game){ //This method checks for a duplicate game in the list and triggers DuplicateGameException
         //Declare Variables
         ListDataDAO listDAO = new ListDataDAO();
         List<UserListItem> games = listDAO.getListForUser(user_id, list.getListName());
         boolean returnVal = false;
 
-        if(games.stream().anyMatch(e -> e.getGame_name().equals(game.getGameName()) && e.getGame_platform().equals(game.getGamePlatform()))){ //Since GameListItem doesn't store game_id, we can check both the name and platform instead
+        try{
+             if(games.stream().anyMatch(e -> e.getGame_name().equals(game.getGameName()) && e.getGame_platform().equals(game.getGamePlatform()))){ //Since GameListItem doesn't store game_id, we can check both the name and platform instead
             returnVal = true;
             throw new DuplicateUsernameException("Game already in list");
+        }
+        }
+        catch(DuplicateUsernameException e){
+            System.out.println(e.getMessage());
         }
         return returnVal;
     }

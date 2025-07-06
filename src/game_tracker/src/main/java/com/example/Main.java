@@ -272,19 +272,25 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UserDataDAO userDAO = new UserDataDAO();
         boolean confirm = false;
+        boolean cancel = false;
         String newName = null;
         Character choice;
 
        while(!confirm){
         System.out.println("Please enter the new username: ");
         newName = scanner.nextLine();
-        System.out.println(newName + "is this right(y/n)?");
+        System.out.println(newName + "is this right(y/n/0 for cancel)?");
         choice = scanner.nextLine().charAt(0);
-        if(choice == 'y') confirm = true;
+        if(choice == 'y' && !dupeCheckUser(newName)) confirm = true;
+        else if(choice == 'n') confirm = false;
+        else if(choice == '0'){ 
+            cancel = true;
+            confirm = true;
+        }
 
        }
 
-       if(userDAO.update(user, 'n', newName)){
+       if(userDAO.update(user, 'n', newName) && !cancel){
         System.out.println("Username updated successfully.");
         user.setUserName(newName);
        }
@@ -321,7 +327,7 @@ public class Main {
        else System.out.println("Failed to update password.");
     }
 
-    public boolean dupeCheckUser(String name){
+    public boolean dupeCheckUser(String name){ //This method checks for a duplicate username and triggers DuplicateUsernameException
         //Declare Variables
         UserDataDAO userDAO = new UserDataDAO();
         List<UserData> users = userDAO.getAll();
@@ -330,7 +336,7 @@ public class Main {
         try{
             if(users.stream().anyMatch(e -> e.getUserName().equals(name))){
             returnVal = true;
-            throw new DuplicateUsernameException("Username already exists");
+            throw new DuplicateUsernameException("Username already exists. Please try again.");
             }
         }
         catch(DuplicateUsernameException e){
