@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.example.ConnectionManager;
 import com.example.Objs.GameData;
-import com.example.Objs.UserData;
 
 public class GameDataDAO implements DAOInterface<GameData> {
 

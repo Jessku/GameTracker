@@ -13,7 +13,6 @@ import com.example.CustomExceptions.DuplicateUsernameException;
 import com.example.Objs.GameData;
 import com.example.Objs.ListData;
 import com.example.Objs.ListItems;
-import com.example.Objs.UserData;
 import com.example.Objs.UserListItem;
 
 public class ListItemsDAO implements DAOInterface<ListItems> {

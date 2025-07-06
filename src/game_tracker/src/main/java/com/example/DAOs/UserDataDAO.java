@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.ConnectionManager;
-import com.example.Objs.ListData;
 import com.example.Objs.UserData;
 
 public class UserDataDAO implements DAOInterface<UserData> {
