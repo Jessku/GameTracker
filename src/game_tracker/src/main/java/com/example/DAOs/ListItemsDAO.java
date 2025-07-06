@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.example.ConnectionManager;
+import com.example.CustomExceptions.DuplicateUsernameException;
 import com.example.Objs.GameData;
 import com.example.Objs.ListData;
 import com.example.Objs.ListItems;
 import com.example.Objs.UserData;
+import com.example.Objs.UserListItem;
 
 public class ListItemsDAO implements DAOInterface<ListItems> {
     // Declare Variables
@@ -206,7 +208,7 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
         return false; // Return false if delete fails
     }
 
-    public boolean addGame(ListData list) {
+    public boolean addGame(ListData list, int user_id) {
         try{
             establishConnection();
             //Declare Variables
@@ -220,6 +222,10 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
             System.out.println("\nPlease enter the game_id of the game you wish to add (0 to exit): ");
             choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character
+            if(dupeCheckGame(list, user_id, gameDAO.getById(choice))){
+                System.out.println("Game already in list.");
+                return false;
+            }
             if(choice != 0){
                 pStatement.setInt(1, list.getListId());
                 pStatement.setInt(2, choice);
@@ -245,6 +251,19 @@ public class ListItemsDAO implements DAOInterface<ListItems> {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private boolean dupeCheckGame(ListData list, int user_id, GameData game){
+        //Declare Variables
+        ListDataDAO listDAO = new ListDataDAO();
+        List<UserListItem> games = listDAO.getListForUser(user_id, list.getListName());
+        boolean returnVal = false;
+
+        if(games.stream().anyMatch(e -> e.getGame_name().equals(game.getGameName()) && e.getGame_platform().equals(game.getGamePlatform()))){ //Since GameListItem doesn't store game_id, we can check both the name and platform instead
+            returnVal = true;
+            throw new DuplicateUsernameException("Game already in list");
+        }
+        return returnVal;
     }
 
 }

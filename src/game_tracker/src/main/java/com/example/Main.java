@@ -1,9 +1,13 @@
-package com.example.DAOs;
+package com.example;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.example.CustomExceptions.DuplicateUsernameException;
+import com.example.DAOs.ListDataDAO;
+import com.example.DAOs.ListItemsDAO;
+import com.example.DAOs.UserDataDAO;
 import com.example.Objs.ListData;
 import com.example.Objs.UserData;
 
@@ -87,7 +91,7 @@ public class Main {
                 System.out.println("Password entered: " + password);
                 System.out.println("Is this right?(y/n)");
                 char choice = scanner.nextLine().charAt(0);
-                if(choice == 'y') confirm = true;
+                if(choice == 'y' && !dupeCheckUser(username)) confirm = true;
             }
             UserData newUser = new UserData(username, password);
             try {
@@ -170,7 +174,7 @@ public class Main {
                 }
                 }
                 else if(choice2 == 2){
-                    itemsDAO.addGame(listData);
+                    itemsDAO.addGame(listData, user_id);
                     ListDAO.getListForUser(user_id, listData.getListName()).forEach(e -> {System.out.println(e.toString());}); //Prints the actual game list
                     
                 }
@@ -317,6 +321,24 @@ public class Main {
        else System.out.println("Failed to update password.");
     }
 
+    public boolean dupeCheckUser(String name){
+        //Declare Variables
+        UserDataDAO userDAO = new UserDataDAO();
+        List<UserData> users = userDAO.getAll();
+        boolean returnVal = false;
+
+        try{
+            if(users.stream().anyMatch(e -> e.getUserName().equals(name))){
+            returnVal = true;
+            throw new DuplicateUsernameException("Username already exists");
+            }
+        }
+        catch(DuplicateUsernameException e){
+            System.out.println(e.getMessage());
+        }
+        
+        return returnVal;
+    }
 
 
     public static void main(String[] args) {  //This is the main method that starts the application.
