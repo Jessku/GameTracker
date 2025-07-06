@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class ConnectionManager {
     //Declare Variables
-    private static final String URL = "jdbc:postgresql://localhost:5432/GameTracker";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "HatsuneMiku";
+    private static final String URL = "jdbc:postgresql://localhost:5432/GameTracker"; //CHANGE THIS WITH YOUR SQL URL
+    private static final String USERNAME = "postgres"; //CHANGE THIS WITH YOUR SQL USERNAME
+    private static final String PASSWORD = "HatsuneMiku"; //CHANGE THIS WITH YOUR SQL PASSWORD
 
     private static Connection connection = null;
 
