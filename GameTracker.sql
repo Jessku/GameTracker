@@ -19,10 +19,8 @@ CREATE TABLE UserData
 CREATE TABLE GameData
 (
 	game_id SERIAL PRIMARY KEY,
-	--user_id INTEGER,
 	game_name VARCHAR(255) NOT NULL,
 	game_platform VARCHAR(255)
-	--FOREIGN KEY (user_id) REFERENCES UserData(user_id) ON DELETE CASCADE
 );
 
 
@@ -40,7 +38,7 @@ CREATE TABLE ListItems
 (
 	item_id SERIAL PRIMARY KEY,
 	list_id INTEGER,
-	game_id INTEGER,
+	game_id INTEGER, 
 	item_status status_enum DEFAULT 'not_started',
 	item_added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	item_inprogress_at TIMESTAMP,
